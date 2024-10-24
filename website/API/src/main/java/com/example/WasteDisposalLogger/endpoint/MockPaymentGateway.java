@@ -18,7 +18,7 @@ public class MockPaymentGateway {
         return paymentService.incrementBalance(username, BigDecimal.valueOf(Double.parseDouble(amount)));
     }
     @PostMapping
-    public ResponseEntity<String> b(@RequestParam String username) throws JsonProcessingException {
+    public ResponseEntity<String> b (@RequestParam String username) throws JsonProcessingException {
         return paymentService.createPayment(username);
     }
     @GetMapping

@@ -27,10 +27,10 @@ public class LoggerService {
         saveLogDTO.validated();
         ConstantMessages[] messages= ConstantMessages.values();
         for (ConstantMessages cc: messages){
-            if (cc.equals(ConstantMessages.WASTE_BIN_IS_OPEN)){
-                paymentService.DecrementBalance(saveLogDTO.getUsername(), BigDecimal.valueOf(100.00));
-            }
             if (cc.getAsText().equalsIgnoreCase(saveLogDTO.getMessage())){
+                if (cc.equals(ConstantMessages.WASTE_BIN_IS_OPEN)){
+                    paymentService.DecrementBalance(saveLogDTO.getUsername(), BigDecimal.valueOf(100.00));
+                }
                 try {
                     LocalDateTime localDateTime = LocalDateTime.parse(saveLogDTO.getDateTime());
                     Logger logData = Logger.builder()
@@ -64,6 +64,8 @@ public class LoggerService {
         try {
             LocalDateTime from = LocalDateTime.parse(dateFrom);
             LocalDateTime to = LocalDateTime.parse(dateTo);
+            log.info("All {}",loggerRepository.findAll());
+            log.info("From {} TO {}",from,to);
 
             List<Logger> loggers = loggerRepository.findByDateTimeBetween(from, to);
             if (loggers.isEmpty()) {

@@ -55,13 +55,14 @@ public class PaymentService {
             paymentRepository.save(Payment.builder()
                     .balance(BigDecimal.ZERO)
                     .appUser(applicationUserOptional.get()).build());
-            response.put("message", "Fetched");
-            return ResponseEntity.ok().body(objectMapper.writeValueAsString(response));
+            response.put("message", "NO BALANCE FOUND CREATE PAYMENT");
+            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(response));
         }
         else {
             Payment payment = paymentOptional.get();
-            response.put("message", payment.getBalance().doubleValue());
-            return ResponseEntity.badRequest().body(objectMapper.writeValueAsString(response));
+            response.put("message", "Fetched");
+            response.put("balance", payment.getBalance().doubleValue());
+            return ResponseEntity.ok().body(objectMapper.writeValueAsString(response));
         }
     }
     public ResponseEntity<String> incrementBalance(String userName, BigDecimal amount) throws JsonProcessingException {

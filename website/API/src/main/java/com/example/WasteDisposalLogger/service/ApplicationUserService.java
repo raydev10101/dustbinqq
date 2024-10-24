@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ApplicationUserService {
     private final ApplicationUserRepository applicationUserRepository;
-
+    private final PaymentService paymentService;
 
     public int signUp(UserDto userDto){
         Optional<ApplicationUser> optionalApplicationUser = applicationUserRepository.findByUsername(userDto.getUsername());
@@ -23,6 +23,12 @@ public class ApplicationUserService {
                     .password(userDto.getPassword())
                     .username(userDto.getUsername())
                     .build());
+            try {
+                paymentService.createPayment(userDto.getUsername());
+            }catch (Exception e){
+                e.printStackTrace();
+                return HttpStatus.BAD_REQUEST.value();
+            }
             return 200;
         }
         return HttpStatus.CONFLICT.value();
