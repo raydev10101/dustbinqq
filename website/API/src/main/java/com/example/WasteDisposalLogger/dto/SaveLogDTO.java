@@ -13,8 +13,15 @@ import lombok.NonNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveLogDTO {
-    @NonNull
     private String dateTime;
-    @NonNull
     private String message;
+    private String username;
+
+
+    public void validated() throws Exception {
+        if (dateTime == null || dateTime.isEmpty() || message == null || message.isEmpty() || username == null || username.isEmpty() ){
+            throw new Exception("ALL FIELDS ARE NON NULLABLE");
+        }
+    }
+
 }
