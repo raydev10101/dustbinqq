@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,10 +21,15 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class LoggerService {
     private final LoggerRepository loggerRepository;
+    private final PaymentService paymentService;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    public SaveLogResponse saveLog(SaveLogDTO saveLogDTO){
+    public SaveLogResponse saveLog(SaveLogDTO saveLogDTO) throws Exception {
+        saveLogDTO.validated();
         ConstantMessages[] messages= ConstantMessages.values();
         for (ConstantMessages cc: messages){
+            if (cc.equals(ConstantMessages.WASTE_BIN_IS_OPEN)){
+                paymentService.DecrementBalance(saveLogDTO.getUsername(), BigDecimal.valueOf(100.00));
+            }
             if (cc.getAsText().equalsIgnoreCase(saveLogDTO.getMessage())){
                 try {
                     LocalDateTime localDateTime = LocalDateTime.parse(saveLogDTO.getDateTime());

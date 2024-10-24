@@ -9,13 +9,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
 @Data
 public class ApplicationUser {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
