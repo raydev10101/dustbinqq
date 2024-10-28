@@ -24,8 +24,8 @@ public class LoggerApi {
         }
     }
     @GetMapping
-    public ResponseEntity<GetLogs> getLog(@RequestParam String dateTimeFrom, @RequestParam String dateTimeTo ){
-        GetLogs getLogs = loggerService.getLogs(dateTimeFrom,dateTimeTo);
+    public ResponseEntity<GetLogs> getLog(@RequestParam String dateTimeFrom, @RequestParam String dateTimeTo, @RequestParam String userName ){
+        GetLogs getLogs = loggerService.getLogs(dateTimeFrom,dateTimeTo, userName);
         return getLogs.isStatus()?ResponseEntity.ok(getLogs):ResponseEntity.badRequest().body(getLogs);
     }
 

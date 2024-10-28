@@ -22,4 +22,5 @@ public class Logger {
     private Long id;
     private LocalDateTime dateTime;
     private String message;
+    private String username;
 }
