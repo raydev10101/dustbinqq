@@ -36,6 +36,7 @@ public class LoggerService {
                     Logger logData = Logger.builder()
                             .message(cc.getAsText())
                             .dateTime(localDateTime)
+                            .username(saveLogDTO.getUsername())
                             .build();
                     logData = loggerRepository.save(logData);
                     return SaveLogResponse.builder()
@@ -60,14 +61,13 @@ public class LoggerService {
                 .status(false)
                 .build();
     }
-    public GetLogs getLogs(String dateFrom, String dateTo){
+    public GetLogs getLogs(String dateFrom, String dateTo, String username){
         try {
             LocalDateTime from = LocalDateTime.parse(dateFrom);
             LocalDateTime to = LocalDateTime.parse(dateTo);
             log.info("All {}",loggerRepository.findAll());
             log.info("From {} TO {}",from,to);
-
-            List<Logger> loggers = loggerRepository.findByDateTimeBetween(from, to);
+            List<Logger> loggers = loggerRepository.findByDateTimeBetween(from, to).stream().filter(logger -> logger.getUsername().equalsIgnoreCase(username)).toList();
             if (loggers.isEmpty()) {
                 return GetLogs.builder()
                         .message("NO LOGS FOUND")
